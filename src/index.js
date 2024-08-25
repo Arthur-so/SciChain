@@ -6,13 +6,13 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import HomePage from './pages/homePage/HomePage';
 import UserPostPage from './pages/userPostPage/UserPostPage';
 // import UserReviewPage from './pages/userReviewPage/UserReviewPage';
 import ReviewArticlePage from './pages/reviewArticle/ReviewArticlePage';
 import AddReviewerPage from './pages/addReviewer/AddReviewerPage';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import PreviewsPage from './pages/previewsPage/PreviewsPage';
+import PurchasedArticlesPage from './pages/purchasedArticlesPage/PurchasedArticlesPage';
 import ErrorPage from './pages/errorPage/ErrorPage';
 
 const router = createBrowserRouter([
@@ -27,6 +27,10 @@ const router = createBrowserRouter([
 {
   path: "/send",
   element: <UserPostPage/> 
+},
+{
+  path: "/articles",
+  element: <PurchasedArticlesPage/> 
 },
 {
   path: "/addreviewer",
