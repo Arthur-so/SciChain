@@ -12,12 +12,17 @@ import UserPostPage from './pages/userPostPage/UserPostPage';
 import ReviewArticlePage from './pages/reviewArticle/ReviewArticlePage';
 import AddReviewerPage from './pages/addReviewer/AddReviewerPage';
 import CategoryPage from './pages/categoryPage/CategoryPage';
+import PreviewsPage from './pages/previewsPage/PreviewsPage';
 import ErrorPage from './pages/errorPage/ErrorPage';
 
 const router = createBrowserRouter([
+// {
+//   path: "/",
+//   element: <HomePage/> 
+// },
 {
   path: "/",
-  element: <HomePage/> 
+  element: <PreviewsPage/> 
 },
 {
   path: "/send",
