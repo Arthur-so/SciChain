@@ -9,6 +9,7 @@ import {
 import HomePage from './pages/homePage/HomePage';
 import UserPostPage from './pages/userPostPage/UserPostPage';
 import UserReviewPage from './pages/userReviewPage/UserReviewPage';
+import AddReviewerPage from './pages/addReviewer/AddReviewerPage';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import ErrorPage from './pages/errorPage/ErrorPage';
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
 {
   path: "/send",
   element: <UserPostPage/> 
+},
+{
+  path: "/addreviewer",
+  element: <AddReviewerPage/> 
 },
 {
   path: "/review",
