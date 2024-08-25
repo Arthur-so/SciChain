@@ -8,7 +8,8 @@ import {
 } from "react-router-dom";
 import HomePage from './pages/homePage/HomePage';
 import UserPostPage from './pages/userPostPage/UserPostPage';
-import UserReviewPage from './pages/userReviewPage/UserReviewPage';
+// import UserReviewPage from './pages/userReviewPage/UserReviewPage';
+import ReviewArticlePage from './pages/reviewArticle/ReviewArticlePage';
 import AddReviewerPage from './pages/addReviewer/AddReviewerPage';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import ErrorPage from './pages/errorPage/ErrorPage';
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
 },
 {
   path: "/review",
-  element: <UserReviewPage/> 
+  element: <ReviewArticlePage/> 
 },
 {
   path: "/category/:id",
