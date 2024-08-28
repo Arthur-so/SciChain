@@ -14,7 +14,7 @@ function PostUserItem(props) {
                 </div>
                 <div>
                     <p>{props.category}</p>
-                    <p>{props.visualizerLink}</p>
+                    <p>{props.preview}</p>
                 </div>
                 {/* <button className="exclude-button" onClick={() => excludePost()}>X</button> */}
             </div>

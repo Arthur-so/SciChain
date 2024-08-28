@@ -124,7 +124,7 @@ function UserPostPage() {
                 </div>
               </article>
               <div>
-                {dataList.map(item => <PostUserItem title={item.title} content={item.content} category={item.category} preview={item.preview}/>)} 
+                {dataList.map(item => <PostUserItem title={item.title} content={item.content} category={categories[item.category]} preview={item.preview}/>)} 
               </div>
           </div>
         </div>
