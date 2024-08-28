@@ -10,7 +10,9 @@ const CategoryPage = () => {
   const [allArticles, setAllArticles] = useState([]);
   const [selectedArticles, setSelectedArticles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const category = ['0', '1', '2', '3', '4'];
+  
+  // Substitua os números por suas representações textuais
+  const categoryNames = ['Test1', 'Test2', 'Test3', 'Test4', 'Test5'];
   const [amount, setAmount] = useState("");
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const CategoryPage = () => {
 
   useEffect(() => {
     if (allArticles.length > 0) {
-      const filteredArticles = allArticles.filter(item => item.category === category[categoryId]);
+      const filteredArticles = allArticles.filter(item => item.category === categoryId);
       setSelectedArticles(filteredArticles);
     }
   }, [allArticles, categoryId]);
@@ -78,7 +80,7 @@ const CategoryPage = () => {
 
   return (
     <div>
-      <h2>Previews na Categoria: {category[categoryId]}</h2>
+      <h2>Previews na Categoria: {categoryNames[categoryId]}</h2>
       {selectedArticles.length === 0 ? (
         <p>Nenhum preview encontrado para esta categoria.</p>
       ) : (
