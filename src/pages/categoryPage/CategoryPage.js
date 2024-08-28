@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useParams } from "react-router-dom";
-import ScientificJournalABI from "../ScientificJournal.json"; // Certifique-se de que o caminho esteja correto
+import ScientificJournalABI from "../ScientificJournal.json";
 
 const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
@@ -10,7 +10,7 @@ const CategoryPage = () => {
   const [allArticles, setAllArticles] = useState([]);
   const [selectedArticles, setSelectedArticles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const category = [ 'Teste1', 'Teste2', 'Teste3', 'Teste4', 'Teste5'];
+  const category = ['0', '1', '2', '3', '4'];
   const [amount, setAmount] = useState("");
 
   useEffect(() => {
@@ -25,9 +25,17 @@ const CategoryPage = () => {
         const signer = await provider.getSigner();
 
         const journalContract = new ethers.Contract(contractAddress, ScientificJournalABI.abi, signer);
-        const categoryList = await journalContract.getAllArticles();
-        setAllArticles(categoryList);
-        selectedArticlesFunc();
+        const articlesObject = await journalContract.getAllArticles();
+
+        // Acumular os artigos no estado allArticles
+        const articlesArray = articlesObject.map(article => ({
+          id: article.id,
+          title: article.title,
+          preview: article.preview,
+          category: article.category
+        }));
+
+        setAllArticles(articlesArray); // Atualiza o estado de allArticles
       } catch (error) {
         console.error("Erro ao obter previews:", error);
       } finally {
@@ -38,10 +46,12 @@ const CategoryPage = () => {
     fetchCategory();
   }, [categoryId]);
 
-  function selectedArticlesFunc(){
-    const filteredArticles = allArticles.filter(item => item.category === category[categoryId]);
-    setSelectedArticles(filteredArticles);
-  }
+  useEffect(() => {
+    if (allArticles.length > 0) {
+      const filteredArticles = allArticles.filter(item => item.category === category[categoryId]);
+      setSelectedArticles(filteredArticles);
+    }
+  }, [allArticles, categoryId]);
 
   const buyArticle = async (articleId) => {
     if (!window.ethereum) {
@@ -84,7 +94,7 @@ const CategoryPage = () => {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
-              <button className="accept-button" onClick={buyArticle}>+</button>
+              <button className="accept-button" onClick={() => buyArticle(item.id)}>+</button>
             </li>
           ))}
         </ul>

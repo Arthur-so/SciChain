@@ -12,7 +12,7 @@ function UserPostPage() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [preview, setPreview] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("0");
   const [postList, setPostList] = useState(false)
   const [account, setAccount] = useState(null)
 
@@ -73,6 +73,8 @@ function UserPostPage() {
       const signer = await getSigner();
 
       const journalContract = new ethers.Contract(contractAddress, ScientificJournalABI.abi, signer);
+      console.log("categoria: ")
+      console.log(category)
       const tx = await journalContract.submitArticle(title, content, preview, category);
       await tx.wait();
 
@@ -109,9 +111,11 @@ function UserPostPage() {
                     <input placeholder='Content' type='text' value={content} onChange={(e) => setContent(e.target.value)}></input>
                   </div>
                   <div>
-                    <select className='select' value={category} onChange={(e) => setCategory(e.target.value)}>
-                      {categories.map(item => <option key={item}>{item}</option>)} 
-                    </select>
+                      <select className='select' value={category} onChange={(e) => setCategory(categories.indexOf(e.target.value).toString())}>
+                        {categories.map((item, index) => (
+                          <option key={index} value={item}>{item}</option>
+                        ))}
+                     </select>
                     <input placeholder='Preview' type='text' value={preview} onChange={(e) => setPreview(e.target.value)}></input>
                   </div>
                   <button className="send-button" onClick={(e) => { e.preventDefault(); submitArticle(); }}>Send!</button>
