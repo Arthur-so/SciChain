@@ -1,0 +1,32 @@
+[
+    {
+      "id": 0,
+      "category": "Teste1",
+      "description": "Descrição do item 1",
+      "src": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 1,
+      "category": "Teste2",
+      "description": "Descrição do item 2",
+      "src": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 2,
+      "category": "Teste3",
+      "description": "Descrição do item 3",
+      "src": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 3,
+      "category": "Teste4",
+      "description": "Descrição do item 4",
+      "src": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 4,
+      "category": "Teste5",
+      "description": "Descrição do item 5",
+      "src": "https://via.placeholder.com/150"
+    }
+]

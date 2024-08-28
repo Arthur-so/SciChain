@@ -1,43 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { ethers } from "ethers";
-import ScientificJournalABI from "../ScientificJournal.json"; // Certifique-se de que o ABI está correto
 import HomeItem from "../../components/homeItem/HomeItem";
-
-const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+import categoriesData from '../../categories.json'; // Importa o JSON
 
 const PreviewsPage = () => {
-  const items = [
-    {
-      Category: 'Teste1',
-      description: 'Descrição do item 1',
-      src: 'https://via.placeholder.com/150'
-    },
-    {
-      Category: 'Teste2',
-      description: 'Descrição do item 2',
-      src: 'https://via.placeholder.com/150'
-    },
-    {
-      Category: 'Teste3',
-      description: 'Descrição do item 3',
-      src: 'https://via.placeholder.com/150'
-    },
-    {
-      Category: 'Teste4',
-      description: 'Descrição do item 4',
-      src: 'https://via.placeholder.com/150'
-    },
-    {
-      Category: 'Teste5',
-      description: 'Descrição do item 5',
-      src: 'https://via.placeholder.com/150'
-    }
-  ];
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    // Aqui você pode carregar os dados do JSON
+    setItems(categoriesData);
+  }, []);
 
   return (
     <div>
-      {items.map((item, index) =>(
-        <HomeItem id={index} title={item.Category} src={item.src} description={item.description}/>
+      {items.map((item) => (
+        <HomeItem 
+          key={item.id}
+          id={item.id}
+          title={item.category}
+          src={item.src}
+          description={item.description}
+        />
       ))}
     </div>
   );

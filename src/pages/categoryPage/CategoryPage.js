@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useParams } from "react-router-dom";
 import ScientificJournalABI from "../ScientificJournal.json";
+import categoriesData from '../../categories.json'; // Importa o JSON
 
 const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
@@ -12,7 +13,6 @@ const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
   
   // Substitua os números por suas representações textuais
-  const categoryNames = ['Test1', 'Test2', 'Test3', 'Test4', 'Test5'];
   const [amount, setAmount] = useState("");
 
   useEffect(() => {
@@ -55,6 +55,9 @@ const CategoryPage = () => {
     }
   }, [allArticles, categoryId]);
 
+  const category = categoriesData.find(cat => cat.id === parseInt(categoryId)); // Busca os detalhes da categoria
+
+
   const buyArticle = async (articleId) => {
     if (!window.ethereum) {
       console.log("MetaMask não detectado!");
@@ -80,7 +83,7 @@ const CategoryPage = () => {
 
   return (
     <div>
-      <h2>Previews na Categoria: {categoryNames[categoryId]}</h2>
+      <h2>Previews na Categoria: {category.category}</h2>
       {selectedArticles.length === 0 ? (
         <p>Nenhum preview encontrado para esta categoria.</p>
       ) : (
