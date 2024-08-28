@@ -10,13 +10,13 @@ function PostUserItem(props) {
             <div className='container-post'>
                 <div>
                     <h3>{props.title}</h3>
-                    <p>{props.file}</p>
+                    <p>{props.content}</p>
                 </div>
                 <div>
-                    <p>{props.description}</p>
+                    <p>{props.category}</p>
                     <p>{props.visualizerLink}</p>
                 </div>
-                <button className="exclude-button" onClick={() => excludePost()}>X</button>
+                {/* <button className="exclude-button" onClick={() => excludePost()}>X</button> */}
             </div>
         </article>);
 }

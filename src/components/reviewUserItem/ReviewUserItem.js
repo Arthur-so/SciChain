@@ -1,16 +1,12 @@
 import './ReviewUserItem.css';
 
 function ReviewUserItem(props) {
-    function rejectPost(){
-        alert("Exclude");
-    }
-
     function acceptPost(){
-        alert("Accept");
+        props.sendReview(props.id, 2)
     }
 
-    function returnPost(){
-        alert("Return feedback");
+    function rejectPost(){
+        props.sendReview(props.id, 3)
     }
 
     return (
@@ -18,21 +14,24 @@ function ReviewUserItem(props) {
             <div className='container-post'>
                 <div>
                     <h3>{props.title}</h3>
-                    <p>{props.file}</p>
+                    <p>{props.content}</p>
                 </div>
                 <div>
-                    <p>{props.description}</p>
-                    <p>{props.visualizerLink}</p>
+                    <p>{props.category}</p>
+                    <p>{props.preview}</p>
+                    <p>{props.status}</p>
                 </div>
-                <div className={props.inv  ? '' : '-inv'}>
-                    <button className="accept-button" onClick={() => acceptPost()}>Y</button>
-                    <button className="exclude-button" onClick={() => rejectPost()}>X</button>
-                    <button className="feedback-button" onClick={() => returnPost()}>-</button>
+                {/* <div className={props.inv  ? '' : '-inv'}> */}
+                <div>
+                    <button className="accept-button" onClick={acceptPost}>Y</button>
+                    <button className="exclude-button" onClick={rejectPost}>X</button>
+                    {/* <button className="feedback-button" onClick={props.returnPost(props.id)}>-</button> */}
                 </div>
             </div>
-            <div className={props.inv  ? 'container-post' : 'container-post -inv'}>
+            {/* <div className={props.inv  ? 'container-post' : 'container-post -inv'}> */}
+            {/* <div className={container-post}>
                 <textarea className="story" rows="4" cols="120" placeholder='Write a feedback...'></textarea>
-            </div>
+            </div> */}
         </article>);
 }
 

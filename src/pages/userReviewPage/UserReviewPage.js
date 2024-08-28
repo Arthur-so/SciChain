@@ -1,22 +1,65 @@
 import { useState, useEffect } from 'react'
 import './UserReviewPage.css';
+import { ethers } from "ethers";
+import ScientificJournalABI from "../ScientificJournal.json"; // O ABI gerado pelo Hardhat
 import FooterItem from '../../components/footerItem/FooterItem';
 import HeaderItem from '../../components/headerItem/HeaderItem';
 import ReviewUserItem from '../../components/reviewUserItem/ReviewUserItem';
 
 function UserReviewPage() {
+  const [articleId, setArticleId] = useState("");
+  const [reviewStatus, setReviewStatus] = useState("Approved");
+  const [reviewerArticles, setReviewerArticles] = useState([]);
 
-  const [postList, setPostList] = useState(false)
-  const [data, setData] = useState({title: "", file: "", description: "", link: ""})
-  
-  function addNewPost(){
-    setPostList(true)
-  }
+  const fetchReviewerArticles = async () => {
+    if (!window.ethereum) {
+      console.log("MetaMask não detectado!");
+      return;
+    }
 
-  function postToBlockchain(){
-    console.log(data.title + " " + data.description + " " + data.link + " " );
-    setPostList(false)
-  }
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const journalContract = new ethers.Contract(contractAddress, ScientificJournalABI.abi, signer);
+
+      const articles = await journalContract.getReviewerArticles();
+      setReviewerArticles(articles);
+    } catch (error) {
+      console.error("Erro ao buscar artigos do revisor:", error);
+    }
+  };
+
+  // Mapeamento de status
+  const statusMapping = {
+    2: "Aprovado",
+    3: "Rejeitado"
+  };
+
+  useEffect(() => {
+    fetchReviewerArticles();
+  }, []);
+
+  const reviewArticle = async () => {
+    if (!window.ethereum) {
+      console.log("MetaMask não detectado!");
+      return;
+    }
+
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+
+      const journalContract = new ethers.Contract(contractAddress, ScientificJournalABI.abi, signer);
+      const tx = await journalContract.reviewArticle(articleId, reviewStatus === "Approved" ? 2 : 3); // 1 para Approved, 2 para Rejected
+      await tx.wait();
+
+      console.log("Revisão do artigo submetida com sucesso!");
+      // Recarregar artigos após a revisão
+      fetchReviewerArticles();
+    } catch (error) {
+      console.error("Erro ao revisar artigo:", error);
+    }
+  };
 
   return (
     <div className="UserReviewPage">
@@ -25,34 +68,28 @@ function UserReviewPage() {
       <main className="content">
         <div className="sidebar-div">
           <aside className="left-sidebar">
-              {/* <img src="profile-pic.jpg" alt="Foto do Perfil" className="profile-pic"> */}
               <h2>Nome do Usuário</h2>
               <p>Biografia ou descrição breve.</p>
               <a href="#">Configurações</a>
           </aside>
-
-          {/* <aside className="left-sidebar">
-              <h4>Categorias</h4>
-              <ul>
-                  <li><a href="#">Categoria 1</a></li>
-                  <li><a href="#">Categoria 2</a></li>
-                  <li><a href="#">Categoria 3</a></li>
-              </ul>
-              <h4>Pesquisar</h4>
-              <input type="text" placeholder="Buscar..."/>
-          </aside> */}
         </div>
 
         <div className="main-content">
           <div className="central-section">
-              <ReviewUserItem title="Teste" file="File" description="Teste" visualizerLink="Teste" inv="true"/>
-              <ReviewUserItem title="Teste" file="File" description="Teste" visualizerLink="Teste" inv=""/>
-              <ReviewUserItem title="Teste" file="File" description="Teste" visualizerLink="Teste" inv=""/>
-              <ReviewUserItem title="Teste" file="File" description="Teste" visualizerLink="Teste" inv="true"/>
-              <ReviewUserItem title="Teste" file="File" description="Teste" visualizerLink="Teste" inv="true"/>
-              <ReviewUserItem title="Teste" file="File" description="Teste" visualizerLink="Teste" inv="true"/>
-              <ReviewUserItem title="Teste" file="File" description="Teste" visualizerLink="Teste" inv="true"/>
-              <ReviewUserItem title="Teste" file="File" description="Teste" visualizerLink="Teste" inv="true"/>
+              {reviewerArticles.length > 0 ? (
+                <ul>
+                  {reviewerArticles.map((article, index) => (
+                    <li key={index}>
+                      <ReviewUserItem />
+                      <strong>ID do Artigo:</strong> {article.id.toString()} <br />
+                      <strong>Título:</strong> {article.title} <br />
+                      <strong>Status:</strong> {statusMapping[article.status]}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Nenhum artigo encontrado para revisão.</p>
+              )}
           </div>
         </div>
       </main>

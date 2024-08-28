@@ -1,13 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import ScientificJournalABI from "../ScientificJournal.json"; // O ABI gerado pelo Hardhat
+import FooterItem from '../../components/footerItem/FooterItem';
+import HeaderItem from '../../components/headerItem/HeaderItem';
+import ReviewUserItem from '../../components/reviewUserItem/ReviewUserItem';
 
 const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
-const ReviewArticlePage = () => {
+function ReviewArticlePage() {
+
   const [articleId, setArticleId] = useState("");
   const [reviewStatus, setReviewStatus] = useState("Approved");
   const [reviewerArticles, setReviewerArticles] = useState([]);
+  const [account, setAccount] = useState(null);
+
+  async function getSigner(){
+    if(!window.ethereum) return console.log("No Wallet found!");
+
+    const provider = new ethers.BrowserProvider(window.ethereum);
+
+    const accounts = await provider.send("eth_requestAccounts", []);
+    if(!accounts || !accounts.length) return console.log("Wallet not authorized.");
+    const signer = await provider.getSigner();
+    return signer
+  }
+
 
   const fetchReviewerArticles = async () => {
     if (!window.ethereum) {
@@ -16,8 +33,7 @@ const ReviewArticlePage = () => {
     }
 
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
+      const signer = await getSigner();
       const journalContract = new ethers.Contract(contractAddress, ScientificJournalABI.abi, signer);
 
       const articles = await journalContract.getReviewerArticles();
@@ -27,28 +43,33 @@ const ReviewArticlePage = () => {
     }
   };
 
-   // Mapeamento de status
- const statusMapping = {
+  // Mapeamento de status
+  const statusMapping = {
     2: "Aprovado",
     3: "Rejeitado"
   };
 
   useEffect(() => {
+    if (window.ethereum) {
+        window.ethereum.on('accountsChanged', (accounts) => {
+        setAccount(accounts);
+        // console.log("Conta alterada:", accounts);
+      });
+    }
     fetchReviewerArticles();
   }, []);
 
-  const reviewArticle = async () => {
+  const reviewArticleFunc = async (id, status) => {
     if (!window.ethereum) {
       console.log("MetaMask não detectado!");
       return;
     }
 
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
+      const signer = await getSigner();
 
       const journalContract = new ethers.Contract(contractAddress, ScientificJournalABI.abi, signer);
-      const tx = await journalContract.reviewArticle(articleId, reviewStatus === "Approved" ? 2 : 3); // 1 para Approved, 2 para Rejected
+      const tx = await journalContract.reviewArticle(id, status); // 1 para Approved, 2 para Rejected
       await tx.wait();
 
       console.log("Revisão do artigo submetida com sucesso!");
@@ -60,41 +81,21 @@ const ReviewArticlePage = () => {
   };
 
   return (
-    <div>
-      <h2>Aprovar/Rejeitar Artigo</h2>
-      <form onSubmit={(e) => { e.preventDefault(); reviewArticle(); }}>
-        <div>
-          <label>ID do Artigo:</label>
-          <input
-            type="number"
-            value={articleId}
-            onChange={(e) => setArticleId(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Status da Revisão:</label>
-          <select value={reviewStatus} onChange={(e) => setReviewStatus(e.target.value)}>
-            <option value="Approved">Aprovar</option>
-            <option value="Rejected">Rejeitar</option>
-          </select>
-        </div>
-        <button type="submit">Enviar Revisão</button>
-      </form>
+    <div className="UserPostPage">
+      <HeaderItem/>
 
       <h3>Artigos Para Revisão</h3>
       {reviewerArticles.length > 0 ? (
         <ul>
           {reviewerArticles.map((article, index) => (
-            <li key={index}>
-              <strong>ID do Artigo:</strong> {article.id.toString()} <br />
-              <strong>Título:</strong> {article.title} <br />
-              <strong>Status:</strong> {statusMapping[article.status]}
-            </li>
+            <ReviewUserItem id={index} title={article.title} content={article.content} category={article.category} preview={article.preview} status={article.status} sendReview={reviewArticleFunc}/>
           ))}
         </ul>
       ) : (
         <p>Nenhum artigo encontrado para revisão.</p>
       )}
+      
+      <FooterItem/>
     </div>
   );
 };

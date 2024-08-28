@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import ScientificJournalABI from "../ScientificJournal.json"; // Certifique-se de que o ABI está correto
+import HeaderItem from '../../components/headerItem/HeaderItem';
+import FooterItem from '../../components/footerItem/FooterItem';
 
 const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
@@ -37,7 +39,8 @@ const PurchasedArticlesPage = () => {
   };
 
   return (
-    <div>
+    <div className="UserPostPage">
+      <HeaderItem/>
       <h2>Artigos Comprados</h2>
       <ul>
         {articles.length > 0 ? (
@@ -53,6 +56,7 @@ const PurchasedArticlesPage = () => {
           <p>Nenhum artigo comprado ainda.</p>
         )}
       </ul>
+      <FooterItem/>
     </div>
   );
 };
