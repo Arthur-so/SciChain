@@ -13,6 +13,7 @@ function ReviewArticlePage() {
   const [reviewStatus, setReviewStatus] = useState("Approved");
   const [reviewerArticles, setReviewerArticles] = useState([]);
   const [account, setAccount] = useState(null);
+  const categories = ["Biomedicine", "Engineering", "Information Technology", "Social Sciences", "Ecology"]
 
   async function getSigner(){
     if(!window.ethereum) return console.log("No Wallet found!");
@@ -88,7 +89,7 @@ function ReviewArticlePage() {
       {reviewerArticles.length > 0 ? (
         <ul>
           {reviewerArticles.map((article, index) => (
-            <ReviewUserItem id={index} title={article.title} content={article.content} category={article.category} preview={article.preview} status={article.status} sendReview={reviewArticleFunc}/>
+            <ReviewUserItem id={index} title={article.title} content={article.content} category={categories[article.category]} preview={article.preview} status={article.status} sendReview={reviewArticleFunc}/>
           ))}
         </ul>
       ) : (
