@@ -89,7 +89,7 @@ function ReviewArticlePage() {
       {reviewerArticles.length > 0 ? (
         <ul>
           {reviewerArticles.map((article, index) => (
-            <ReviewUserItem id={index} title={article.title} content={article.content} category={categories[article.category]} preview={article.preview} status={article.status} sendReview={reviewArticleFunc}/>
+            <ReviewUserItem id={Number(article.id)} title={article.title} content={article.content} category={categories[article.category]} preview={article.preview} status={article.status} sendReview={reviewArticleFunc}/>
           ))}
         </ul>
       ) : (
