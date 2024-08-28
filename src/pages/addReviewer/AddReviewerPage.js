@@ -74,7 +74,11 @@ const AddReviewerPage = () => {
       const signer = await provider.getSigner();
       
       const journalContract = new ethers.Contract(contractAddress, ScientificJournalABI.abi, signer);
-
+      const isEditor = await journalContract.isEditor();
+      console.log(isEditor)
+      if (isEditor == false) {
+        return
+      }
       const articles = await journalContract.getAllArticles();
       setArticlesToReview(articles);
     } catch (error) {

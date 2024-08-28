@@ -28,7 +28,7 @@ const CategoryPage = () => {
 
         const journalContract = new ethers.Contract(contractAddress, ScientificJournalABI.abi, signer);
         const articlesObject = await journalContract.getAllArticles();
-
+        
         // Acumular os artigos no estado allArticles
         const articlesArray = articlesObject.map(article => ({
           id: article.id,

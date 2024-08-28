@@ -5,6 +5,8 @@ import './UserPostPage.css';
 import FooterItem from '../../components/footerItem/FooterItem';
 import HeaderItem from '../../components/headerItem/HeaderItem';
 import PostUserItem from '../../components/postUserItem/PostUserItem';
+import categoriesData from '../../categories.json';
+
 const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
 function UserPostPage() {
@@ -111,10 +113,10 @@ function UserPostPage() {
                     <input placeholder='Content' type='text' value={content} onChange={(e) => setContent(e.target.value)}></input>
                   </div>
                   <div>
-                      <select className='select' value={category} onChange={(e) => setCategory(categories.indexOf(e.target.value).toString())}>
-                        {categories.map((item, index) => (
-                          <option key={index} value={item}>{item}</option>
-                        ))}
+                      <select className='select' value={category} onChange={(e) => setCategory(categoriesData.indexOf(e.target.value).toString())}>
+                      {categoriesData.map((item, index) => (
+                        <option key={index} value={index}>{item.category}</option>
+                      ))}
                      </select>
                     <input placeholder='Preview' type='text' value={preview} onChange={(e) => setPreview(e.target.value)}></input>
                   </div>
