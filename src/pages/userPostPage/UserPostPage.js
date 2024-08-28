@@ -10,7 +10,7 @@ import categoriesData from '../../categories.json';
 const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
 function UserPostPage() {
-  const categories = ["Teste1", "Teste2", "Teste3", "Teste4", "Teste5"]
+  const categories = ["Biomedicine", "Engineering", "Information Technology", "Social Sciences", "Ecology"]
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [preview, setPreview] = useState("");
@@ -113,10 +113,10 @@ function UserPostPage() {
                     <input placeholder='Content' type='text' value={content} onChange={(e) => setContent(e.target.value)}></input>
                   </div>
                   <div>
-                      <select className='select' value={category} onChange={(e) => setCategory(categoriesData.indexOf(e.target.value).toString())}>
-                      {categoriesData.map((item, index) => (
-                        <option key={index} value={index}>{item.category}</option>
-                      ))}
+                      <select className='select' value={categories[category]} onChange={(e) => setCategory(categories.indexOf(e.target.value).toString())}>
+                        {categories.map((item, index) => (
+                          <option key={index} value={item}>{item}</option>
+                        ))}
                      </select>
                     <input placeholder='Preview' type='text' value={preview} onChange={(e) => setPreview(e.target.value)}></input>
                   </div>
